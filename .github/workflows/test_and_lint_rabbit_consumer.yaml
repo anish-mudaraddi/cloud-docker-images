@@ -1,4 +1,4 @@
-name: Cloud Monitoring Lint & Test
+name: Rabbit Consumer Lint & Test
 
 on:
   push:
@@ -35,8 +35,8 @@ jobs:
 
       - name: Check code formatting with Black
         run: |
-          cd cloud-monitoring
-          black --check --diff cloudMonitoring/ tests/
+          cd openstack-rabbit-consumer
+          black --check --diff rabbit_consumer/ tests/
 
       - name: Run tests
         # Using Python3 to launch the module sets up the Python path for us

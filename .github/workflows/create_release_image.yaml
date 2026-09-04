@@ -31,7 +31,6 @@ jobs:
         env:
           BEFORE: ${{ github.event.before }}
         run: |
-          set -euo pipefail
 
           image_paths=$(
               find . \
@@ -40,7 +39,7 @@ jobs:
                   -printf '%h\n' |
               sed 's|^\./||' |
               sort -u |
-              jq -R -s 'split("\n") | map(select(length > 0))'
+              jq -Rc -s 'split("\n") | map(select(length > 0))'
           )
 
           echo "image_paths=$image_paths" >> "$GITHUB_OUTPUT"

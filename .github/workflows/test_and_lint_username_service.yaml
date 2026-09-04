@@ -1,4 +1,4 @@
-name: Username Service
+name: Username Service Test and Lint
 
 on:
   push:

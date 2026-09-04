@@ -30,7 +30,6 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          set -euo pipefail
 
           # find changed files
           changed=$(git diff --name-only "$BASE_SHA...$HEAD_SHA")
@@ -43,10 +42,10 @@ jobs:
                   -printf '%h\n' |
               sed 's|^\./||' |
               while read -r dir; do
-                  grep -q "^$dir/" <<< "$changed" && echo "$dir"
+                  grep -q "^$dir/" <<< "$changed" && echo "$dir";
               done |
               sort -u |
-              jq -R -s 'split("\n") | map(select(length > 0))'
+              jq -Rc -s 'split("\n") | map(select(length > 0))'
           )
 
           # each unique path to image directory changed needs a dev images built
@@ -74,7 +73,6 @@ jobs:
           IMAGE_PATH: ${{ matrix.image_path }}
           BASE: ${{ github.event.pull_request.base.sha }}
         run: |
-          set -euo pipefail
 
           new=$(tr -d '[:space:]' < "$IMAGE_PATH/version.txt")
           tag="$(basename "$IMAGE_PATH")-$new"
@@ -121,7 +119,8 @@ jobs:
     if: >-
       ${{ needs.detect.outputs.image_paths != '[]' &&
           (contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.pull_request.author_association) ||
-           contains(fromJSON('["dependabot[bot"]'), github.event.pull_request.user.login)) }}
+           contains(fromJSON('["dependabot[bot]"]'), github.event.pull_request.user.login)) }}
+
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

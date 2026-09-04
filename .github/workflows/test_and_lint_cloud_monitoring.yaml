@@ -37,7 +37,7 @@ jobs:
       - name: Check code formatting with Black
         run: |
           cd cloud-monitoring
-          black --check --diff cloudMonitoring/ tests/
+          black --check --diff cloudmon/ tests/
 
       - name: Analyse with pylint
         run: |
